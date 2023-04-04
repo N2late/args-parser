@@ -5,6 +5,11 @@ if (args.length === 0) {
   process.exit(1);
 }
 
+args = args[0].split(' ');
+
+args[0] = args[0].replace('[', '');
+args[args.length - 1] = args[args.length - 1].replace(']', '');
+
 let obj: any = {};
 
 args.forEach((arg: string, index: number) => {
