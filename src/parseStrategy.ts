@@ -2,28 +2,28 @@ interface ParseStrategy {
   parse(args: string[]): void;
 }
 
-class ParseStrategySimple implements ParseStrategy {
+class StrategyParseSimple implements ParseStrategy {
   parse(args: string[]) {
     let key = args[0].replace(/--/g, '');
     return { [key]: true };
   }
 }
 
-class ParseStrategyComposite implements ParseStrategy {
+class StrategyParseComposite implements ParseStrategy {
   parse(args: string[]) {
     let key = args[0].replace(/--/g, '');
     return { [key]: +args[1] };
   }
 }
 
-class ParseStrategyWithNumber implements ParseStrategy {
+class StrategyParseWithNumber implements ParseStrategy {
   parse(args: string[]) {
     let key = args[0].replace(/--/g, '');
     return { [key]: +args[1] };
   }
 }
 
-class ParseContext {
+class ContextParser {
   private strategy: ParseStrategy;
 
   constructor(strategy: ParseStrategy) {
@@ -38,3 +38,10 @@ class ParseContext {
     return this.strategy.parse(args);
   }
 }
+
+export {
+  ContextParser,
+  StrategyParseSimple,
+  StrategyParseComposite,
+  StrategyParseWithNumber,
+};

@@ -1,31 +1,38 @@
-let args: any = process.argv.slice(2);
+import {
+  ContextParser,
+  StrategyParseSimple,
+  StrategyParseComposite,
+  StrategyParseWithNumber,
+} from './parseStrategy';
 
-if (args.length === 0) {
-  console.log('Add args');
-  process.exit(1);
-}
+import {
+  checkIfKey,
+  checkIfIsNumber,
+  checkIfIsBoolean,
+  checkInputIsNotEmpty,
+  checkIfIsArray,
+  splitArray,
+} from './util/util';
 
-args = args[0].split(' ');
+let args: string[] = process.argv.slice(2);
 
-args[0] = args[0].replace('[', '');
-args[args.length - 1] = args[args.length - 1].replace(']', '');
+checkInputIsNotEmpty(args);
+
+args = checkIfIsArray(args) ? splitArray(args) : args;
 
 let obj: any = {};
 
 args.forEach((arg: string, index: number) => {
-  if (arg === '--number') {
+  if (checkIfIsNumber(args, index)) {
     let key = arg.replace(/--/g, '');
     obj[key] = parseInt(args[index + 1]);
     return;
   }
-  if (
-    (arg.startsWith('--') && args[index + 1] === undefined) ||
-    (arg.startsWith('--') && args[index + 1].startsWith('--'))
-  ) {
+  if (checkIfKey(arg) && checkIfIsBoolean(args, index)) {
     let key = arg.replace(/--/g, '');
     obj[key] = true;
     return;
-  } else if (arg.startsWith('--')) {
+  } else if (checkIfKey(arg)) {
     let key = arg.replace(/--/g, '');
     obj[key] = args[index + 1];
     return;
