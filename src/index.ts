@@ -4,6 +4,7 @@ import {
   StrategyParseComposite,
   StrategyParseWithNumber,
 } from './parseStrategy';
+import { Obj } from './util/types';
 
 import {
   checkIfKey,
@@ -20,24 +21,28 @@ checkInputIsNotEmpty(args);
 
 args = checkIfIsArray(args) ? splitArray(args) : args;
 
-let obj: any = {};
+let obj: Obj = {};
 
 args.forEach((arg: string, index: number) => {
+  let contextParser = new ContextParser(new StrategyParseSimple());
+  contextParser.setStrategy(new StrategyParseWithNumber());
+
   if (checkIfIsNumber(args, index)) {
-    let key = arg.replace(/--/g, '');
-    obj[key] = parseInt(args[index + 1]);
+    contextParser.setStrategy(new StrategyParseWithNumber());
+    contextParser.parse(args, obj, arg, index);
     return;
   }
+
   if (checkIfKey(arg) && checkIfIsBoolean(args, index)) {
-    let key = arg.replace(/--/g, '');
-    obj[key] = true;
+    contextParser.setStrategy(new StrategyParseSimple());
+    contextParser.parse(args, obj, arg);
     return;
   } else if (checkIfKey(arg)) {
-    let key = arg.replace(/--/g, '');
-    obj[key] = args[index + 1];
+    contextParser.setStrategy(new StrategyParseComposite());
+    contextParser.parse(args, obj, arg, index);
     return;
   }
 });
 
-obj = JSON.stringify(obj);
-console.log(obj);
+const newJson = JSON.stringify(obj);
+console.log(newJson);

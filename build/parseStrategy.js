@@ -4,10 +4,9 @@ exports.StrategyParseWithNumber = exports.StrategyParseComposite = exports.Strat
 var StrategyParseSimple = /** @class */ (function () {
     function StrategyParseSimple() {
     }
-    StrategyParseSimple.prototype.parse = function (args) {
-        var _a;
-        var key = args[0].replace(/--/g, '');
-        return _a = {}, _a[key] = true, _a;
+    StrategyParseSimple.prototype.parse = function (args, obj, arg) {
+        var key = arg.replace(/--/g, '');
+        return (obj[key] = true);
     };
     return StrategyParseSimple;
 }());
@@ -15,10 +14,9 @@ exports.StrategyParseSimple = StrategyParseSimple;
 var StrategyParseComposite = /** @class */ (function () {
     function StrategyParseComposite() {
     }
-    StrategyParseComposite.prototype.parse = function (args) {
-        var _a;
-        var key = args[0].replace(/--/g, '');
-        return _a = {}, _a[key] = +args[1], _a;
+    StrategyParseComposite.prototype.parse = function (args, obj, arg, index) {
+        var key = arg.replace(/--/g, '');
+        return (obj[key] = args[index + 1]);
     };
     return StrategyParseComposite;
 }());
@@ -26,10 +24,9 @@ exports.StrategyParseComposite = StrategyParseComposite;
 var StrategyParseWithNumber = /** @class */ (function () {
     function StrategyParseWithNumber() {
     }
-    StrategyParseWithNumber.prototype.parse = function (args) {
-        var _a;
-        var key = args[0].replace(/--/g, '');
-        return _a = {}, _a[key] = +args[1], _a;
+    StrategyParseWithNumber.prototype.parse = function (args, obj, arg, index) {
+        var key = arg.replace(/--/g, '');
+        return (obj[key] = parseInt(args[index + 1]));
     };
     return StrategyParseWithNumber;
 }());
@@ -40,9 +37,10 @@ var ContextParser = /** @class */ (function () {
     }
     ContextParser.prototype.setStrategy = function (strategy) {
         this.strategy = strategy;
+        return true;
     };
-    ContextParser.prototype.parse = function (args) {
-        return this.strategy.parse(args);
+    ContextParser.prototype.parse = function (args, obj, arg, index) {
+        return this.strategy.parse(args, obj, arg, index);
     };
     return ContextParser;
 }());

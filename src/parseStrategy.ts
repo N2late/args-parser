@@ -1,25 +1,34 @@
+import { Obj } from './util/types';
+
 interface ParseStrategy {
-  parse(args: string[]): void;
+  parse(
+    args: string[],
+    obj: Obj,
+    arg?: string,
+    index?: number | undefined,
+  ): void;
 }
 
 class StrategyParseSimple implements ParseStrategy {
-  parse(args: string[]) {
-    let key = args[0].replace(/--/g, '');
-    return { [key]: true };
+  parse(args: string[], obj: Obj, arg: string) {
+    let key = arg.replace(/--/g, '');
+
+    return (obj[key] = true);
   }
 }
 
 class StrategyParseComposite implements ParseStrategy {
-  parse(args: string[]) {
-    let key = args[0].replace(/--/g, '');
-    return { [key]: +args[1] };
+  parse(args: string[], obj: Obj, arg: string, index: number) {
+    let key = arg.replace(/--/g, '');
+    return (obj[key] = args[index + 1]);
   }
 }
 
 class StrategyParseWithNumber implements ParseStrategy {
-  parse(args: string[]) {
-    let key = args[0].replace(/--/g, '');
-    return { [key]: +args[1] };
+  parse(args: string[], obj: Obj, arg: string, index: number) {
+    let key = arg.replace(/--/g, '');
+
+    return (obj[key] = parseInt(args[index + 1]));
   }
 }
 
@@ -32,10 +41,11 @@ class ContextParser {
 
   setStrategy(strategy: ParseStrategy) {
     this.strategy = strategy;
+    return true;
   }
 
-  parse(args: string[]) {
-    return this.strategy.parse(args);
+  parse(args: string[], obj: Obj, arg?: string, index?: number) {
+    return this.strategy.parse(args, obj, arg, index);
   }
 }
 
