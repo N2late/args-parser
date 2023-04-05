@@ -41,7 +41,6 @@ class ContextParser {
 
   setStrategy(strategy: ParseStrategy) {
     this.strategy = strategy;
-    return true;
   }
 
   parse(args: string[], obj: Obj, arg?: string, index?: number) {

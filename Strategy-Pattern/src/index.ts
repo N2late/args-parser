@@ -25,7 +25,6 @@ let obj: Obj = {};
 
 args.forEach((arg: string, index: number) => {
   let contextParser = new ContextParser(new StrategyParseSimple());
-  contextParser.setStrategy(new StrategyParseWithNumber());
 
   if (checkIfIsNumber(args, index)) {
     contextParser.setStrategy(new StrategyParseWithNumber());

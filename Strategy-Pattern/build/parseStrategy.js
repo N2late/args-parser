@@ -37,7 +37,6 @@ var ContextParser = /** @class */ (function () {
     }
     ContextParser.prototype.setStrategy = function (strategy) {
         this.strategy = strategy;
-        return true;
     };
     ContextParser.prototype.parse = function (args, obj, arg, index) {
         return this.strategy.parse(args, obj, arg, index);

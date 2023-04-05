@@ -8,7 +8,6 @@ args = (0, util_1.checkIfIsArray)(args) ? (0, util_1.splitArray)(args) : args;
 var obj = {};
 args.forEach(function (arg, index) {
     var contextParser = new parseStrategy_1.ContextParser(new parseStrategy_1.StrategyParseSimple());
-    contextParser.setStrategy(new parseStrategy_1.StrategyParseWithNumber());
     if ((0, util_1.checkIfIsNumber)(args, index)) {
         contextParser.setStrategy(new parseStrategy_1.StrategyParseWithNumber());
         contextParser.parse(args, obj, arg, index);
